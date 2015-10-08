@@ -15,7 +15,7 @@ namespace MyvarWeb.Internals.Http
             {"Connection", "Closed"}
         };
 
-        public string Body { get; set; } = "";
+        public byte[] Body { get; set; } = new byte[0];
 
 
         public string HeadersToString()
@@ -34,9 +34,5 @@ namespace MyvarWeb.Internals.Http
             return re.ToString();
         }
 
-        public override string ToString()
-        {
-            return Body;
-        }
     }
 }

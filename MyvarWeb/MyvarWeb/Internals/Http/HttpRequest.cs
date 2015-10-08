@@ -10,6 +10,8 @@ namespace MyvarWeb.Internals.Http
     {
         public Dictionary<string, string> Headers { get; set; } = new Dictionary<string, string>();
 
+        public Uri Uri { get; set; }
+
         public static HttpRequest Parse(byte[] buffer)
         {
             var raw = Encoding.UTF8.GetString(buffer);
@@ -23,6 +25,7 @@ namespace MyvarWeb.Internals.Http
                     re.Headers.Add(x[0].Trim(), x[1].Trim());
                 }
             }
+            re.Uri = new Uri("http://" + re.Headers["Host"]);
             return re;
         }
     }

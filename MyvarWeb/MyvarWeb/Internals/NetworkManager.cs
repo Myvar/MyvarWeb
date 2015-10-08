@@ -46,13 +46,15 @@ namespace MyvarWeb.Internals
                                 var headers = Encoding.UTF8.GetBytes(res.HeadersToString());
                                 ns.Write(headers, 0, headers.Length);
                                 //body
-                                var body = Encoding.UTF8.GetBytes(res.ToString());
+                                var body = res.Body;
                                 ns.Write(body, 0, body.Length);
 
                                 //close the connection
                                 ns.Flush();
                                 ns.Close();
                                 tcp.Close();
+                                //just to be on the safe side
+                                Thread.CurrentThread.Abort();
                             }
                         }
 
@@ -60,6 +62,12 @@ namespace MyvarWeb.Internals
                 }
 
             }, _listener);
+        }
+
+        public void Stop()
+        {
+            _listener.Stop();
+            
         }
     }
 }

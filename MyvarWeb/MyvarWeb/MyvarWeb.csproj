@@ -53,6 +53,7 @@
     <Compile Include="Internals\Http\HttpResponce.cs" />
     <Compile Include="Internals\Log.cs" />
     <Compile Include="Internals\NetworkManager.cs" />
+    <Compile Include="Internals\Utils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
