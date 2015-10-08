@@ -37,9 +37,29 @@ namespace MyvarWeb.Internals
             var re = new HttpResponce();
             re.Body = Utils.GetBytes("404 Page not found");
 
-            if(File.Exists(req.Uri.LocalPath))
+            var path = req.Uri.Host + req.Uri.LocalPath;
+            var filepath = Path.Combine(Config.RootDirectory, path);
+            if (File.Exists(filepath))
             {
-                re.Body = File.ReadAllBytes(req.Uri.LocalPath);
+                re.Body = File.ReadAllBytes(filepath);
+                re.Headers.Add("Content-Type", Utils.GetExsentionType(new FileInfo(filepath).Extension));
+            }
+            else
+            {
+                string newf = "";
+                if(File.Exists(Path.Combine(filepath,"index.cs")))
+                {
+                    newf = Path.Combine(filepath, "index.cs");
+                }
+                if (File.Exists(Path.Combine(filepath, "index.html")))
+                {
+                    newf = Path.Combine(filepath, "index.html");
+                }
+                if (File.Exists(newf))
+                {
+                    re.Body = File.ReadAllBytes(newf);
+                    re.Headers.Add("Content-Type", Utils.GetExsentionType(new FileInfo(newf).Extension));
+                }
             }
 
             return re;

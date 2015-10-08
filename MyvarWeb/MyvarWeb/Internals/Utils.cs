@@ -29,6 +29,7 @@ namespace MyvarWeb.Internals
         #region extension to MIME type list
         private static Dictionary<string, string> _mimeTypeMappings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) {
 
+        {".cs", "text/html"},
         {".asf", "video/x-ms-asf"},
         {".asx", "video/x-ms-asf"},
         {".avi", "video/x-msvideo"},

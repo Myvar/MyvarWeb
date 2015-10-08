@@ -19,13 +19,28 @@ namespace MyvarWeb.Internals.Http
 
             foreach (var i in raw.Replace("\r\n", "\n").Split('\n'))
             {
-                var x = i.Split(':');
-                if (x.Length == 2)
+                if (!string.IsNullOrEmpty(i))
                 {
-                    re.Headers.Add(x[0].Trim(), x[1].Trim());
+                    var x = i.Split(':');
+                    if (x.Length == 2)
+                    {
+                        re.Headers.Add(x[0].Trim(), x[1].Trim());
+                    }
+                    else
+                    {
+                        x = i.Split(' ');
+                        if (x.Length == 3)
+                        {
+                            re.Headers.Add(x[0].Trim(), x[1].Trim());
+                        }
+                        else
+                        {
+                            re.Headers.Add(i, "");
+                        }
+                    }
                 }
             }
-            re.Uri = new Uri("http://" + re.Headers["Host"]);
+            re.Uri = new Uri("http://" + re.Headers["Host"] + re.Headers["GET"]);
             return re;
         }
     }
