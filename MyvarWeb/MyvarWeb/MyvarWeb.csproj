@@ -63,6 +63,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MyvarWeb.Databank\MyvarWeb.Databank.csproj">
+      <Project>{dc8accbf-4709-495c-8f2d-4d4ac7f17cb7}</Project>
+      <Name>MyvarWeb.Databank</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MyvarWeb.Scripted\MyvarWeb.Scripted.csproj">
       <Project>{e439c986-2ee6-49da-b27b-0112bc95391d}</Project>
       <Name>MyvarWeb.Scripted</Name>

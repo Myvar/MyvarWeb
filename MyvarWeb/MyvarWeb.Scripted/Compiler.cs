@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.CodeDom;
+using MyvarWeb.Databank;
+
 
 namespace MyvarWeb.Scripted
 {
@@ -20,11 +22,11 @@ namespace MyvarWeb.Scripted
 
         public static bool ReCompile { get; set; }
         public static bool DebugMode { get; set; }
-  
+
 
         public static string Compile(string inpath, string outpath)
         {
-           
+
             string ret = "";
             using (var codeProvider = new CSharpCodeProvider())
             {
@@ -34,6 +36,7 @@ namespace MyvarWeb.Scripted
                 parameters.OutputAssembly = outpath;
                 parameters.ReferencedAssemblies.Add("System.Net.dll");
                 parameters.ReferencedAssemblies.Add("System.dll");
+                parameters.ReferencedAssemblies.Add("MyvarWeb.Databank.dll");
                 string Bootstrap = Resources.BootStrap;
 
                 string code = "";
@@ -97,7 +100,7 @@ namespace MyvarWeb.Scripted
                 var xx = Bootstrap.Replace("/* Code */", code);
                 CompilerResults results = codeProvider.CompileAssemblyFromSource(parameters, xx);
                 codeProvider.Dispose();
-               
+
                 if (DebugMode)
                 {
                     if (results.Errors.Count != 0)
@@ -109,7 +112,7 @@ namespace MyvarWeb.Scripted
                     }
                 }
             }
-           
+
             return ret;
         }
 
@@ -126,10 +129,10 @@ namespace MyvarWeb.Scripted
         }
 
 
-        public static object Execute(string path, HttpListenerRequest req, bool cash = false)
+        public static object Execute(string path, Dictionary<string, string> Get = null, Dictionary<string, string> Post = null, MyvarWeb.Databank.Databank bank = null, bool cash = false)
         {
             string ret = "";
-            if(!Directory.Exists("tmp"))
+            if (!Directory.Exists("tmp"))
             {
                 Directory.CreateDirectory("tmp");
             }
@@ -166,13 +169,28 @@ namespace MyvarWeb.Scripted
             }
             if (File.Exists(tmpf))
             {
-               
+
                 var ta = Assembly.Load(File.ReadAllBytes(tmpf));
-            
+
                 var type = ta.GetType("Page.Main");
                 var metod = type.GetMethods()[0];
-             
-                ret += metod.Invoke(null, null);
+
+                try
+                {
+                    ret += metod.Invoke(null, new object[] { Get, Post, bank });
+
+                }
+                catch (Exception e)
+                {
+                    if (e.InnerException != null)
+                    {
+                        string err = e.InnerException.Message;
+                        if(DebugMode)
+                        {
+                            ret += err;
+                        }
+                    }
+                }
                 if (!cash)
                 {
                     File.Delete(tmpf);

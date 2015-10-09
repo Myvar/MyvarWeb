@@ -1,5 +1,6 @@
 ﻿using MyvarWeb.Internals.Http;
 using MyvarWeb.Scripted;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,6 +28,11 @@ namespace MyvarWeb.Internals
                 Directory.CreateDirectory(Config.RootDirectory);
             }
 
+            if (!Directory.Exists(Config.Databank))
+            {
+                Directory.CreateDirectory(Config.Databank);
+            }
+
             Compiler.DebugMode = true;
             Compiler.ReCompile = true;
         }
@@ -52,7 +58,7 @@ namespace MyvarWeb.Internals
                 }
                 else
                 {
-                    re.Body = Utils.GetBytes(Compiler.Execute(filepath, null) as string);
+                    re.Body = Utils.GetBytes(Compiler.Execute(filepath, Utils.BuildGetOrPost(req.Uri.Query), Utils.BuildGetOrPost(req.Body), GetBank(Path.Combine(Config.Databank, req.Uri.Host + ".bank")) ) as string);
                     re.Headers.Add("Content-Type", Utils.GetExsentionType(new FileInfo(filepath).Extension));
                 }
             }
@@ -76,13 +82,25 @@ namespace MyvarWeb.Internals
                     }
                     else
                     {
-                        re.Body = Utils.GetBytes(Compiler.Execute(newf, null) as string);
+                        re.Body = Utils.GetBytes(Compiler.Execute(newf, Utils.BuildGetOrPost(req.Uri.Query), Utils.BuildGetOrPost(req.Body), GetBank(Path.Combine(Config.Databank, req.Uri.Host + ".bank"))) as string);
                         re.Headers.Add("Content-Type", Utils.GetExsentionType(new FileInfo(newf).Extension));
                     }
                 }
             }
 
             return re;
+        }
+
+        private static  Databank.Databank GetBank(string p)
+        {
+            if(File.Exists(p))
+            {
+                return Databank.Databank.Load(p);
+            }
+            else
+            {
+                return new Databank.Databank(p);
+            }
         }
 
     }

@@ -9,6 +9,7 @@ namespace MyvarWeb
 {
     public static class Config
     {
+        public static string Databank { get; set; } = "databanks";
         public static int Port { get; set; } = 80;
         public static string RootDirectory { get; set; } = "www";
 
