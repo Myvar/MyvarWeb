@@ -1,0 +1,28 @@
+﻿using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Net;
+
+namespace Page
+{
+    
+    public static class Main
+    {
+
+
+		private static string ret = "";
+
+        public static string Run()
+        {
+
+			/* Code */
+			return ret;
+        }
+
+
+		public static void print(string txt)
+        {
+			ret += txt;
+        }
+    }
+}

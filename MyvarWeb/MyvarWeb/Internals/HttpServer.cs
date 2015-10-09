@@ -1,4 +1,5 @@
 ﻿using MyvarWeb.Internals.Http;
+using MyvarWeb.Scripted;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,6 +26,9 @@ namespace MyvarWeb.Internals
             {
                 Directory.CreateDirectory(Config.RootDirectory);
             }
+
+            Compiler.DebugMode = true;
+            Compiler.ReCompile = true;
         }
 
         public static void Stop()
@@ -41,8 +45,16 @@ namespace MyvarWeb.Internals
             var filepath = Path.Combine(Config.RootDirectory, path);
             if (File.Exists(filepath))
             {
-                re.Body = File.ReadAllBytes(filepath);
-                re.Headers.Add("Content-Type", Utils.GetExsentionType(new FileInfo(filepath).Extension));
+                if (!filepath.EndsWith(".cs"))
+                {
+                    re.Body = File.ReadAllBytes(filepath);
+                    re.Headers.Add("Content-Type", Utils.GetExsentionType(new FileInfo(filepath).Extension));
+                }
+                else
+                {
+                    re.Body = Utils.GetBytes(Compiler.Execute(filepath, null) as string);
+                    re.Headers.Add("Content-Type", Utils.GetExsentionType(new FileInfo(filepath).Extension));
+                }
             }
             else
             {
@@ -57,8 +69,16 @@ namespace MyvarWeb.Internals
                 }
                 if (File.Exists(newf))
                 {
-                    re.Body = File.ReadAllBytes(newf);
-                    re.Headers.Add("Content-Type", Utils.GetExsentionType(new FileInfo(newf).Extension));
+                    if (!newf.EndsWith(".cs"))
+                    {
+                        re.Body = File.ReadAllBytes(newf);
+                        re.Headers.Add("Content-Type", Utils.GetExsentionType(new FileInfo(newf).Extension));
+                    }
+                    else
+                    {
+                        re.Body = Utils.GetBytes(Compiler.Execute(newf, null) as string);
+                        re.Headers.Add("Content-Type", Utils.GetExsentionType(new FileInfo(newf).Extension));
+                    }
                 }
             }
 
