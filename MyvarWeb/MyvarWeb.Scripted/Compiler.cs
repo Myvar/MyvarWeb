@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.CodeDom;
 
 namespace MyvarWeb.Scripted
 {
@@ -55,7 +56,7 @@ namespace MyvarWeb.Scripted
                                 {
                                     if (s1[i + 3] == 's')
                                     {
-                                        code += "\nret += \"" + tmp.Replace("\"","\\\"").Replace("\\","\\\\").Replace("\r\n", "\n").Replace("\n", "\\n") + "\";\n";
+                                        code += "\nret += " + ToLiteral(tmp) + ";\n";
                                         tmp = "";
                                         inCode = true;
                                         i += 3;
@@ -88,7 +89,7 @@ namespace MyvarWeb.Scripted
 
                     if (i == s1.Length - 1)
                     {
-                        code += "\nret += \"" + tmp.Replace("\"", "\\\"").Replace("\\", "\\\\").Replace("\r\n","\n").Replace("\n","\\n") + "\";\n";
+                        code += "\nret += " + ToLiteral(tmp) + ";\n";
                         tmp = "";
                     }
 
@@ -111,6 +112,19 @@ namespace MyvarWeb.Scripted
            
             return ret;
         }
+
+        private static string ToLiteral(string input)
+        {
+            using (var writer = new StringWriter())
+            {
+                using (var provider = CodeDomProvider.CreateProvider("CSharp"))
+                {
+                    provider.GenerateCodeFromExpression(new CodePrimitiveExpression(input), writer, null);
+                    return writer.ToString();
+                }
+            }
+        }
+
 
         public static object Execute(string path, HttpListenerRequest req, bool cash = false)
         {
