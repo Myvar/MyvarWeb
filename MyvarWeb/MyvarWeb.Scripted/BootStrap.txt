@@ -12,18 +12,25 @@ namespace Page
 
 
 		private static string ret = "";
+		private static string Path = "";
 
-        public static string Run(Dictionary<string,string> Get = null, Dictionary<string, string> Post = null, MyvarWeb.Databank.Databank DataBank = null)
+        public static string Run(ref Dictionary<string, string> Session, Dictionary<string,string> Get = null, Dictionary<string, string> Post = null, MyvarWeb.Databank.Databank DataBank = null)
         {
 
 			/* Code */
 			return ret;
         }
 
+		public static void SetPath(string h)
+        {
+			Path = h;
+        }
 
 		public static void print(string txt)
         {
 			ret += txt;
         }
+
+		/* Lib */
     }
 }

@@ -33,6 +33,11 @@ namespace MyvarWeb.Internals
                 Directory.CreateDirectory(Config.Databank);
             }
 
+            if (!Directory.Exists(Config.SessionDirectory))
+            {
+                Directory.CreateDirectory(Config.SessionDirectory);
+            }
+
             Compiler.DebugMode = true;
             Compiler.ReCompile = true;
         }
@@ -46,6 +51,17 @@ namespace MyvarWeb.Internals
         {
             var re = new HttpResponce();
             re.Body = Utils.GetBytes("404 Page not found");
+            var guid = "";
+            if (!req.Headers.ContainsKey("Cookie"))
+            {
+                var x = SessionManager.Create();
+                re.Headers.Add("Set-Cookie", "sid=" + x + "; expires=" + DateTime.Now.AddYears(10).ToUniversalTime().ToString("r"));
+                guid = x;
+            }
+            else
+            {
+                guid = req.Headers["Cookie"].Split(';')[0].Split('=')[1].Trim();
+            }
 
             var path = req.Uri.Host + req.Uri.LocalPath;
             var filepath = Path.Combine(Config.RootDirectory, path);
@@ -58,8 +74,11 @@ namespace MyvarWeb.Internals
                 }
                 else
                 {
-                    re.Body = Utils.GetBytes(Compiler.Execute(filepath, Utils.BuildGetOrPost(req.Uri.Query), Utils.BuildGetOrPost(req.Body), GetBank(Path.Combine(Config.Databank, req.Uri.Host + ".bank")) ) as string);
+                    var x = Compiler.Execute(filepath, Utils.BuildGetOrPost(req.Uri.Query), Utils.BuildGetOrPost(req.Body), GetBank(Path.Combine(Config.Databank, req.Uri.Host + ".bank")), filepath, SessionManager.Get(guid));
+                    re.Body = Utils.GetBytes(x[0] as string);
                     re.Headers.Add("Content-Type", Utils.GetExsentionType(new FileInfo(filepath).Extension));
+                    dynamic z = x[1];
+                    SessionManager.Set(guid, z);
                 }
             }
             else
@@ -82,12 +101,15 @@ namespace MyvarWeb.Internals
                     }
                     else
                     {
-                        re.Body = Utils.GetBytes(Compiler.Execute(newf, Utils.BuildGetOrPost(req.Uri.Query), Utils.BuildGetOrPost(req.Body), GetBank(Path.Combine(Config.Databank, req.Uri.Host + ".bank"))) as string);
+                        var x = Compiler.Execute(newf, Utils.BuildGetOrPost(req.Uri.Query), Utils.BuildGetOrPost(req.Body), GetBank(Path.Combine(Config.Databank, req.Uri.Host + ".bank")), filepath, SessionManager.Get(guid));
+                        re.Body = Utils.GetBytes(x[0] as string);
                         re.Headers.Add("Content-Type", Utils.GetExsentionType(new FileInfo(newf).Extension));
+                        dynamic z = x[1];
+                        SessionManager.Set(guid, z);
                     }
                 }
             }
-
+           
             return re;
         }
 

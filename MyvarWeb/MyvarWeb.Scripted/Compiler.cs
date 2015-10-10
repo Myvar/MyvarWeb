@@ -96,8 +96,13 @@ namespace MyvarWeb.Scripted
                         tmp = "";
                     }
 
-                }
+                } 
+
                 var xx = Bootstrap.Replace("/* Code */", code);
+                if(File.Exists("lib.cs"))
+                {
+                    xx = xx.Replace("/* Lib */", File.ReadAllText("lib.cs"));
+                }
                 CompilerResults results = codeProvider.CompileAssemblyFromSource(parameters, xx);
                 codeProvider.Dispose();
 
@@ -129,7 +134,7 @@ namespace MyvarWeb.Scripted
         }
 
 
-        public static object Execute(string path, Dictionary<string, string> Get = null, Dictionary<string, string> Post = null, MyvarWeb.Databank.Databank bank = null, bool cash = false)
+        public static List<object> Execute(string path, Dictionary<string, string> Get = null, Dictionary<string, string> Post = null, MyvarWeb.Databank.Databank bank = null,string p = "", Dictionary<string, string> Session = null, bool cash = false)
         {
             string ret = "";
             if (!Directory.Exists("tmp"))
@@ -174,10 +179,16 @@ namespace MyvarWeb.Scripted
 
                 var type = ta.GetType("Page.Main");
                 var metod = type.GetMethods()[0];
-
+                var metod1 = type.GetMethods()[1];
+                metod1.Invoke(null, new object[] { p });
                 try
                 {
-                    ret += metod.Invoke(null, new object[] { Get, Post, bank });
+
+                    ret += metod.Invoke(null, new object[] { Session, Get, Post, bank });
+                    if(Session != null)
+                    {
+                        
+                    }
 
                 }
                 catch (Exception e)
@@ -200,7 +211,7 @@ namespace MyvarWeb.Scripted
             {
                 ret += "Error Chould not find compiled page";
             }
-            return ret;
+            return new List<object>() { ret, Session };
         }
     }
 }

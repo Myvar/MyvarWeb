@@ -12,6 +12,7 @@ namespace MyvarWeb
         public static string Databank { get; set; } = "databanks";
         public static int Port { get; set; } = 80;
         public static string RootDirectory { get; set; } = "www";
+        public static string SessionDirectory { get; set; } = "sessions";
 
         [JsonIgnore]
         public static string ServerVertion { get; set; } = "0.0.1";
