@@ -107,7 +107,7 @@ namespace MyvarWeb.Internals
             {
                 return null;
             }
-
+            query = query.Trim();
             var re = new Dictionary<string, string>();
             var x = HttpUtility.ParseQueryString(query);
             foreach(var i in x)
