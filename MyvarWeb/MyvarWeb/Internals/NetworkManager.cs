@@ -34,27 +34,38 @@ namespace MyvarWeb.Internals
                         while (tcp.Connected)
                         {
                             if (ns.DataAvailable)
-                            {
-                                byte[] buffer = new byte[4096];
-                                int bytesread = ns.Read(buffer, 0, buffer.Length);
-                                Array.Resize(ref buffer, bytesread); //Cut it to be the actual message.
+                            {try
+                                {
+                                    byte[] buffer = new byte[4096];
+                                    int bytesread = ns.Read(buffer, 0, buffer.Length);
+                                    Array.Resize(ref buffer, bytesread); //Cut it to be the actual message.
 
-                                var res = Handler(HttpRequest.Parse(buffer));
+                                    var res = Handler(HttpRequest.Parse(buffer));
 
-                                //wright respond
-                                //headers
-                                var headers = Encoding.UTF8.GetBytes(res.HeadersToString());
-                                ns.Write(headers, 0, headers.Length);
-                                //body
-                                var body = res.Body;
-                                ns.Write(body, 0, body.Length);
+                                    //wright respond
+                                    //headers
+                                    var headers = Encoding.UTF8.GetBytes(res.HeadersToString());
+                                    ns.Write(headers, 0, headers.Length);
+                                    //body
+                                    var body = res.Body;
+                                    ns.Write(body, 0, body.Length);
 
-                                //close the connection
-                                ns.Flush();
-                                ns.Close();
-                                tcp.Close();
-                                //just to be on the safe side
-                                Thread.CurrentThread.Abort();
+                                    //close the connection
+                                    ns.Flush();
+                                    ns.Close();
+                                    tcp.Close();
+                                    //just to be on the safe side
+                                    Thread.CurrentThread.Abort();
+                                }
+                                catch
+                                {
+                                    //close the connection
+                                    ns.Flush();
+                                    ns.Close();
+                                    tcp.Close();
+                                    //just to be on the safe side
+                                    Thread.CurrentThread.Abort();
+                                }
                             }
                         }
 
