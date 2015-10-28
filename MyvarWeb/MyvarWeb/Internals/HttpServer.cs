@@ -7,6 +7,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Threading;
 
 namespace MyvarWeb.Internals
 {
@@ -49,6 +51,7 @@ namespace MyvarWeb.Internals
 
         public static HttpResponce HandleReq(HttpRequest req)
         {
+          
             var re = new HttpResponce();
             re.Body = Utils.GetBytes("404 Page not found");
             var guid = "";
@@ -109,7 +112,9 @@ namespace MyvarWeb.Internals
                     }
                 }
             }
-           
+            
+        
+         
             return re;
         }
 

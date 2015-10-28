@@ -37,6 +37,7 @@ namespace MyvarWeb.Scripted
                 parameters.ReferencedAssemblies.Add("System.Net.dll");
                 parameters.ReferencedAssemblies.Add("System.dll");
                 parameters.ReferencedAssemblies.Add("MyvarWeb.Databank.dll");
+                parameters.ReferencedAssemblies.Add("Newtonsoft.Json.dll");
                 string Bootstrap = Resources.BootStrap;
 
                 string code = "";
@@ -59,7 +60,7 @@ namespace MyvarWeb.Scripted
                                 {
                                     if (s1[i + 3] == 's')
                                     {
-                                        code += "\nret += " + ToLiteral(tmp) + ";\n";
+                                        code += "\nret.Append(" + ToLiteral(tmp) + ");\n";
                                         tmp = "";
                                         inCode = true;
                                         i += 3;
@@ -92,12 +93,12 @@ namespace MyvarWeb.Scripted
 
                     if (i == s1.Length - 1)
                     {
-                        code += "\nret += " + ToLiteral(tmp) + ";\n";
+                        code += "\nret.Append(" + ToLiteral(tmp) + ");\n";
                         tmp = "";
                     }
 
                 } 
-
+                
                 var xx = Bootstrap.Replace("/* Code */", code);
                 if(File.Exists("lib.cs"))
                 {
