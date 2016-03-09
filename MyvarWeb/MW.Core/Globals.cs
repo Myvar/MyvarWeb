@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileDownloader
+namespace MW.Core
 {
-    class Program
+    public static class Globals
     {
-        static void Main(string[] args)
-        {
-
-        }
+        public static Config cfg = new Config();
     }
 }

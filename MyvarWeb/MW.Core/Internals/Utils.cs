@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace MyvarWeb.Internals
+namespace MW.Core.Internals
 {
     public static class Utils
     {
@@ -98,25 +97,25 @@ namespace MyvarWeb.Internals
         {".zip", "application/zip"},
 
     };
-  #endregion
+        #endregion
 
 
         public static Dictionary<string, string> BuildGetOrPost(string query)
         {
-            if(query == null)
+            if (query == null)
             {
                 return null;
             }
             query = query.Trim();
             var re = new Dictionary<string, string>();
             var x = HttpUtility.ParseQueryString(query);
-            foreach(var i in x)
+            foreach (var i in x)
             {
                 re.Add(i as string, x.Get(i as string));
             }
 
             return re;
         }
-      
+
     }
 }

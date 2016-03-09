@@ -1,4 +1,4 @@
-﻿using MyvarWeb.Internals;
+﻿using MW.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,17 +11,8 @@ namespace MyvarWeb
     {
         static void Main(string[] args)
         {
-            Log.Info("Server starting ...");
-
-            HttpServer.Start();
-
-            Log.Info("Server booted");
-
-            while (true)
-            {
-                //wright console interface here
-            }
-
+            var en = new Engine();
+            en.Start();
         }
     }
 }

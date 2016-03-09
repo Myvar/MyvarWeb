@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BD94981E-DB3B-4E04-ADDC-649CB4231071}</ProjectGuid>
+    <ProjectGuid>{2C8F6D15-4272-4181-9CF5-83BE8EDFB0C7}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MyvarWeb</RootNamespace>
@@ -33,13 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -48,29 +43,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config.cs" />
-    <Compile Include="Internals\HttpServer.cs" />
-    <Compile Include="Internals\Http\HttpRequest.cs" />
-    <Compile Include="Internals\Http\HttpResponce.cs" />
-    <Compile Include="Internals\Log.cs" />
-    <Compile Include="Internals\NetworkManager.cs" />
-    <Compile Include="Internals\SessionManager.cs" />
-    <Compile Include="Internals\Utils.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MyvarWeb.Databank\MyvarWeb.Databank.csproj">
-      <Project>{dc8accbf-4709-495c-8f2d-4d4ac7f17cb7}</Project>
-      <Name>MyvarWeb.Databank</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MyvarWeb.Scripted\MyvarWeb.Scripted.csproj">
-      <Project>{e439c986-2ee6-49da-b27b-0112bc95391d}</Project>
-      <Name>MyvarWeb.Scripted</Name>
+    <ProjectReference Include="..\MW.Core\MW.Core.csproj">
+      <Project>{ba84e19d-d6ba-4268-a07f-e0a233a7366a}</Project>
+      <Name>MW.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
