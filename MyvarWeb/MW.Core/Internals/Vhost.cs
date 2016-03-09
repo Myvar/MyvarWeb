@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -12,6 +13,7 @@ namespace MW.Core.Internals
 {
     public class Vhost
     {
+        [JsonIgnore]
         public Func<HttpRequest, HttpResponce> HandleRequest { get; set; } = (x) =>
         {
             return new HttpResponce("404 Page not found");
@@ -19,11 +21,17 @@ namespace MW.Core.Internals
 
         public string host { get; set; }
         public int port { get; set; }
+        public string Handler { get; set; } = "";
 
         public Vhost(string ahost)
         {
             host = ahost.Replace(ahost.Split(':').Last(), "").TrimEnd(':');
-            port = Convert.ToInt32(ahost.Split(':').Last());           
-        }        
+            port = Convert.ToInt32(ahost.Split(':').Last());
+
+            if (string.IsNullOrEmpty(Handler))
+            {
+                //bind HandleRequest to cgi stuff
+            }
+        }
     }
 }

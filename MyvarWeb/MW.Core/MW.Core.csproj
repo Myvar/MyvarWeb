@@ -53,6 +53,7 @@
     <Compile Include="Internals\HttpHeader.cs" />
     <Compile Include="Internals\HttpRequest.cs" />
     <Compile Include="Internals\HttpResponce.cs" />
+    <Compile Include="Internals\Logger.cs" />
     <Compile Include="Internals\Proxy.cs" />
     <Compile Include="Internals\Utils.cs" />
     <Compile Include="Internals\Vhost.cs" />
@@ -60,6 +61,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Internals\cgi\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
