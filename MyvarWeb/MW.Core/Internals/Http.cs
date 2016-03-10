@@ -44,6 +44,11 @@ namespace MW.Core.Internals
                 Logger.Log("Binding to port " + i.Aport);
                 i.Start();
             }
+
+            foreach(var i in Globals.cfg.CgiList)
+            {
+                Logger.Log("Found cgi: " + i.Name);
+            }
             
         }
     }

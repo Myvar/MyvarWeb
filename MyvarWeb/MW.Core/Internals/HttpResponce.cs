@@ -19,6 +19,11 @@ namespace MW.Core.Internals
             ConnectionOpen = false;
         }
 
+        public HttpResponce()
+        {
+
+        }
+
         public byte[] Flush()
         {
             List<byte> Responce = new List<byte>();

@@ -48,6 +48,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="Globals.cs" />
+    <Compile Include="Internals\cgi\Cgi.cs" />
     <Compile Include="Internals\Http.cs" />
     <Compile Include="Internals\HttpHandler.cs" />
     <Compile Include="Internals\HttpHeader.cs" />
@@ -55,6 +56,7 @@
     <Compile Include="Internals\HttpResponce.cs" />
     <Compile Include="Internals\Logger.cs" />
     <Compile Include="Internals\Proxy.cs" />
+    <Compile Include="Internals\Serve.cs" />
     <Compile Include="Internals\Utils.cs" />
     <Compile Include="Internals\Vhost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,9 +64,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Internals\cgi\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

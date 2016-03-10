@@ -14,8 +14,9 @@ namespace MW.Core
         public void Start()
         {
 
-            if(File.Exists("config.json"))
+            if (File.Exists("config.json"))
             {
+            
                 Globals.cfg = JsonConvert.DeserializeObject<Config>(File.ReadAllText("config.json"));
             }
             else

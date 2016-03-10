@@ -53,8 +53,8 @@ namespace MW.Core.Internals
 
                         var req = new HttpRequest(buffer);
 
-                        var res = Globals.cfg.VhostList.Where((x) => { return Regex.IsMatch(req.Header["Host"].Value, x.host) && x.port == Port; }).First().HandleRequest(req);
-
+                        var resmeth = Globals.cfg.VhostList.Where((x) => { return Regex.IsMatch(req.Header["Host"].Value, x.host) && x.port == Port; }).First();
+                        var res = resmeth.HandleRequest(req, resmeth.www, resmeth.host, resmeth);
                         if (res.FlushOnClose)
                         {
                             if (!res.ConnectionOpen)

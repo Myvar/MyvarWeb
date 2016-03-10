@@ -8,6 +8,6 @@ namespace MW.Core
 {
     public static class Globals
     {
-        public static Config cfg = new Config();
+        public static Config cfg = new Config(true);
     }
 }
