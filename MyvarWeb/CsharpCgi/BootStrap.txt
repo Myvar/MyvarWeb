@@ -1,0 +1,37 @@
+﻿using System;
+using System.IO;
+using System.Collections.Generic;
+using System.Net;
+using System.Text;
+using Newtonsoft.Json;
+
+namespace Page
+{
+    
+    public static class Main
+    {
+
+
+		private static StringBuilder ret = new StringBuilder();
+		private static string Path = "";
+
+        public static string Run(ref Dictionary<string, string> Session, Dictionary<string,string> Get = null, Dictionary<string, string> Post = null)
+        {
+
+			/* Code */
+			return ret.ToString();
+        }
+
+		public static void SetPath(string h)
+        {
+			Path = h;
+        }
+
+		public static void print(string txt)
+        {
+			ret.Append(txt);
+        }
+
+		/* Lib */
+    }
+}

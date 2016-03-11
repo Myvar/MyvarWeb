@@ -37,11 +37,19 @@ namespace MW.Core
                 Exe = ".\\bin\\php\\php-cgi.exe",
                 Name = "php",
                 FileExtensions = new List<string>() { ".php" }
+            },
+            new Cgi()
+            {
+                CommandLine = "\"{file}\" -d",
+                Exe = ".\\bin\\cs\\CsharpCgi.exe",
+                Name = "csharp",
+                FileExtensions = new List<string>() { ".cs" }
             }
         };
 
         public List<string> IndexTypes { get; set; } = new List<string>()
         {
+            "index.cs",
             "index.php",
             "index.htm",
             "index.html"
