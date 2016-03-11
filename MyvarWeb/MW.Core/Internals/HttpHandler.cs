@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -60,13 +61,13 @@ namespace MW.Core.Internals
                             if (!res.ConnectionOpen)
                             {
                                 var sendbuffer = res.Flush();
-                                ns.Write(sendbuffer, 0, sendbuffer.Length);
+                                Write(ns, sendbuffer);
                             }
                         }
                         else
                         {
                             var sendbuffer = res.Flush();
-                            ns.Write(sendbuffer, 0, sendbuffer.Length);
+                            Write(ns, sendbuffer);
                         }
 
                         if (!res.ConnectionOpen)
@@ -80,6 +81,34 @@ namespace MW.Core.Internals
                     }
                 }
             });
+        }
+
+        private void Write(NetworkStream s, byte[] b)
+        {
+            var stream = new MemoryStream(b);
+            byte[] buffer = new byte[4096];
+            while (true)
+            {
+                int space = 4096, read, offset = 0;
+                while (space > 0 && (read = stream.Read(buffer, offset, space)) > 0)
+                {
+                    space -= read;
+                    offset += read;
+                }
+                // either a full buffer, or EOF
+                if (space != 0)
+                { // EOF - final
+                    if (offset != 0)
+                    { // something to send
+                        Array.Resize(ref buffer, offset);
+                        s.Write(buffer, 0, buffer.Length);
+                    }
+                    break;
+                }
+                else { // full buffer
+                    s.Write(buffer, 0, buffer.Length);
+                }
+            }
         }
     }
 }

@@ -31,6 +31,7 @@ namespace MW.Core.Internals
         private static Dictionary<string, string> _mimeTypeMappings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase) {
 
         {".cs", "text/html"},
+        {".php", "text/html"},
         {".asf", "video/x-ms-asf"},
         {".asx", "video/x-ms-asf"},
         {".avi", "video/x-msvideo"},
@@ -95,6 +96,9 @@ namespace MW.Core.Internals
         {".xml", "text/xml"},
         {".xpi", "application/x-xpinstall"},
         {".zip", "application/zip"},
+        {".woff", "application/font-woff"},
+        {".woff2", "application/font-woff2"},
+        {".ttf", "application/x-font-ttf"},
 
     };
         #endregion

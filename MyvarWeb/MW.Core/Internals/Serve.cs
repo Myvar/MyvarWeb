@@ -13,7 +13,8 @@ namespace MW.Core.Internals
         public static HttpResponce Serveuri(HttpRequest req, string www, string host, Vhost v)
         {
             var res = new List<byte>();
-            string path = "./" + www + req.Header.Fields[0].ID.Split(' ')[1];
+            string contenttype = ".html";
+            string path = "./" + www + req.Header.Fields[0].ID.Split(' ')[1].Split('?')[0];
             try
             {
 
@@ -24,6 +25,8 @@ namespace MW.Core.Internals
                     {
                         if (File.Exists(Path.Combine(path, i)))
                         {
+                            var fli = new FileInfo(Path.Combine(path, i));
+                            contenttype = Utils.GetExsentionType(fli.Extension);
                             res.AddRange(GetContent(Path.Combine(path, i), v));
                             break;
                         }
@@ -33,6 +36,8 @@ namespace MW.Core.Internals
                 {
                     if (File.Exists(path))
                     {
+                        var fli = new FileInfo(path);
+                        contenttype = Utils.GetExsentionType(fli.Extension);
                         res.AddRange(GetContent(path, v));
                     }
                 }
@@ -45,7 +50,11 @@ namespace MW.Core.Internals
             {
                 return new HttpResponce("404 Page not found");
             }
-            return new HttpResponce() { Body = res.ToArray(), ConnectionOpen = false };
+            var resp = new HttpResponce() { Body = res.ToArray(), ConnectionOpen = false };
+            resp.Header.Fields.Add(new HttpField("Content-Type", contenttype)); 
+            resp.Header.Fields.Add(new HttpField("Content-Length", res.Count.ToString())); 
+            resp.Header.Fields.Add(new HttpField("Content-Range: bytes")); 
+            return resp;
         }
 
         public static byte[] GetContent(string path, Vhost v)
