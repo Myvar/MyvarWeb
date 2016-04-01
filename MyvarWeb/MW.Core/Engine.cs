@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MW.Core
@@ -26,7 +27,10 @@ namespace MW.Core
 
             var webserver = new Http();
             webserver.Start();
-            while (true) ; // dont kill main thread
+            while (true)
+            {
+                Thread.Sleep(10);
+            }; // dont kill main thread
         }
     }
 }

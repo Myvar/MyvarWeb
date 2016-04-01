@@ -31,7 +31,15 @@ namespace MW.Core.Internals
             {
                 while (true)
                 {
-                    HandleClient(_tcp.AcceptTcpClient());
+                    var cl = _tcp.AcceptTcpClient();
+
+                    ThreadPool.QueueUserWorkItem((xyza) =>
+                    {
+
+                    HandleClient(cl);
+
+                    });
+
                 }
             });
         }
@@ -39,8 +47,7 @@ namespace MW.Core.Internals
 
         private void HandleClient(TcpClient c)
         {
-            ThreadPool.QueueUserWorkItem((xyz) =>
-            {
+          
 
                 var ns = c.GetStream();
 
@@ -75,12 +82,17 @@ namespace MW.Core.Internals
                             ns.Flush();
                             ns.Close();
                             ns.Dispose();
+                           
                             c.Close();
+                            break;
+                            
                         }
 
                     }
                 }
-            });
+
+                Thread.CurrentThread.Abort();
+            
         }
 
         private void Write(NetworkStream s, byte[] b)
@@ -103,7 +115,7 @@ namespace MW.Core.Internals
                         Array.Resize(ref buffer, offset);
                         s.Write(buffer, 0, buffer.Length);
                     }
-                    break;
+                    return;
                 }
                 else { // full buffer
                     s.Write(buffer, 0, buffer.Length);
