@@ -11,6 +11,8 @@ namespace MW.Core
 {
     public class Config
     {
+        
+
         public List<Proxy> ProxyList { get; set; } = new List<Proxy>()
         {
 

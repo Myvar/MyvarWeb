@@ -15,34 +15,37 @@ namespace MW.Core.Internals
             var res = new List<byte>();
             string contenttype = ".html";
             string path = "./" + www + req.Header.Fields[0].ID.Split(' ')[1].Split('?')[0];
-            try
+            string query = req.Header.Fields[0].ID.Split(' ')[1].Split('?').Last();
+            //try
             {
 
-
-                if (File.GetAttributes(path).HasFlag(FileAttributes.Directory))
+                if (File.Exists(path))
                 {
-                    foreach (var i in Globals.cfg.IndexTypes)
+                    if (File.GetAttributes(path).HasFlag(FileAttributes.Directory))
                     {
-                        if (File.Exists(Path.Combine(path, i)))
+                        foreach (var i in Globals.cfg.IndexTypes)
                         {
-                            var fli = new FileInfo(Path.Combine(path, i));
+                            if (File.Exists(Path.Combine(path, i)))
+                            {
+                                var fli = new FileInfo(Path.Combine(path, i));
+                                contenttype = Utils.GetExsentionType(fli.Extension);
+                                res.AddRange(GetContent(Path.Combine(path, i), v, query));
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (File.Exists(path))
+                        {
+                            var fli = new FileInfo(path);
                             contenttype = Utils.GetExsentionType(fli.Extension);
-                            res.AddRange(GetContent(Path.Combine(path, i), v));
-                            break;
+                            res.AddRange(GetContent(path, v, query));
                         }
                     }
                 }
-                else
-                {
-                    if (File.Exists(path))
-                    {
-                        var fli = new FileInfo(path);
-                        contenttype = Utils.GetExsentionType(fli.Extension);
-                        res.AddRange(GetContent(path, v));
-                    }
-                }
             }
-            catch
+          //  catch
             { }
 
             
@@ -57,7 +60,7 @@ namespace MW.Core.Internals
             return resp;
         }
 
-        public static byte[] GetContent(string path, Vhost v)
+        public static byte[] GetContent(string path, Vhost v, string query)
         {
             byte[] re = File.ReadAllBytes(path);
 
@@ -70,10 +73,10 @@ namespace MW.Core.Internals
                     var p = new Process();
                     p.StartInfo.FileName = Path.GetFullPath(i.Exe);
                     p.StartInfo.CreateNoWindow = true;
-                    p.StartInfo.Arguments = i.CommandLine.Replace("{file}", Path.GetFullPath(path).TrimEnd('/')) ;
+                    p.StartInfo.Arguments = i.CommandLine.Replace("{file}", Path.GetFullPath(path).TrimEnd('/')) + " " + query.Split('#')[0].Replace("&", " s");
                     p.StartInfo.RedirectStandardOutput = true;
                     p.StartInfo.UseShellExecute = false;
-
+                   // p.StartInfo.EnvironmentVariables["QUERY_STRING"] =  ;
                     p.Start();
                     
                     string sOutput = p.StandardOutput.ReadToEnd();
