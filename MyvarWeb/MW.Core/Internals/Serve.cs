@@ -16,47 +16,50 @@ namespace MW.Core.Internals
             string contenttype = ".html";
             string path = "./" + www + req.Header.Fields[0].ID.Split(' ')[1].Split('?')[0];
             string query = req.Header.Fields[0].ID.Split(' ')[1].Split('?').Last();
-            //try
+            try
             {
 
-                if (File.Exists(path))
+
+                if (File.GetAttributes(path).HasFlag(FileAttributes.Directory))
                 {
-                    if (File.GetAttributes(path).HasFlag(FileAttributes.Directory))
+                    foreach (var i in Globals.cfg.IndexTypes)
                     {
-                        foreach (var i in Globals.cfg.IndexTypes)
+                        if (File.Exists(Path.Combine(path, i)))
                         {
-                            if (File.Exists(Path.Combine(path, i)))
-                            {
-                                var fli = new FileInfo(Path.Combine(path, i));
-                                contenttype = Utils.GetExsentionType(fli.Extension);
-                                res.AddRange(GetContent(Path.Combine(path, i), v, query));
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (File.Exists(path))
-                        {
-                            var fli = new FileInfo(path);
+                            var fli = new FileInfo(Path.Combine(path, i));
                             contenttype = Utils.GetExsentionType(fli.Extension);
-                            res.AddRange(GetContent(path, v, query));
+                            res.AddRange(GetContent(Path.Combine(path, i), v, query));
+                            break;
                         }
                     }
                 }
             }
-          //  catch
+            catch
+            { }
+            try
+            {
+
+                if (File.Exists(path))
+                {
+                    var fli = new FileInfo(path);
+                    contenttype = Utils.GetExsentionType(fli.Extension);
+                    res.AddRange(GetContent(path, v, query));
+                }
+
+
+            }
+            catch
             { }
 
-            
+
             if (res.Count == 0)
             {
                 return new HttpResponce("404 Page not found");
             }
             var resp = new HttpResponce() { Body = res.ToArray(), ConnectionOpen = false };
-            resp.Header.Fields.Add(new HttpField("Content-Type", contenttype)); 
-            resp.Header.Fields.Add(new HttpField("Content-Length", res.Count.ToString())); 
-            resp.Header.Fields.Add(new HttpField("Content-Range: bytes")); 
+            resp.Header.Fields.Add(new HttpField("Content-Type", contenttype));
+            resp.Header.Fields.Add(new HttpField("Content-Length", res.Count.ToString()));
+            resp.Header.Fields.Add(new HttpField("Content-Range: bytes"));
             return resp;
         }
 
