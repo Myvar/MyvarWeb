@@ -79,6 +79,7 @@ namespace MW.Core.Internals
                     p.StartInfo.Arguments = i.CommandLine.Replace("{file}", Path.GetFullPath(path).TrimEnd('/')) + " " + query.Split('#')[0].Replace("&", " s");
                     p.StartInfo.RedirectStandardOutput = true;
                     p.StartInfo.UseShellExecute = false;
+                    p.StartInfo.WorkingDirectory = Path.GetDirectoryName(path);
                    // p.StartInfo.EnvironmentVariables["QUERY_STRING"] =  ;
                     p.Start();
                     
