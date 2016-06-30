@@ -76,7 +76,7 @@ namespace MW.Core.Internals
                     var p = new Process();
                     p.StartInfo.FileName = Path.GetFullPath(i.Exe);
                     p.StartInfo.CreateNoWindow = true;
-                    p.StartInfo.Arguments = i.CommandLine.Replace("{file}", Path.GetFullPath(path).TrimEnd('/')) + " " + query.Split('#')[0].Replace("&", " s");
+                    p.StartInfo.Arguments = i.CommandLine.Replace("{file}", Path.GetFullPath(path).TrimEnd('/')) + " " + query.Split('#')[0].Replace("&", " ");
                     p.StartInfo.RedirectStandardOutput = true;
                     p.StartInfo.UseShellExecute = false;
                     p.StartInfo.WorkingDirectory = Path.GetDirectoryName(path);
