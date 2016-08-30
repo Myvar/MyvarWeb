@@ -44,6 +44,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Headers\AcceptEncodingHeader.cs" />
+    <Compile Include="Headers\AcceptHeader.cs" />
+    <Compile Include="Headers\AcceptLanguageHeader.cs" />
+    <Compile Include="Headers\CacheControlHeader.cs" />
+    <Compile Include="Headers\ConnectionHeader.cs" />
+    <Compile Include="Headers\DateHeader.cs" />
+    <Compile Include="Headers\GenericHeader.cs" />
+    <Compile Include="Headers\HostHeader.cs" />
+    <Compile Include="Headers\HttpFieldHeader.cs" />
+    <Compile Include="Headers\MethodHeader.cs" />
+    <Compile Include="Headers\ServerHeader.cs" />
+    <Compile Include="Headers\UserAgentHeader.cs" />
+    <Compile Include="Net\HttpField.cs" />
     <Compile Include="Net\HttpHeader.cs" />
     <Compile Include="Net\HttpRequest.cs" />
     <Compile Include="Net\HttpResponce.cs" />
@@ -56,6 +69,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
