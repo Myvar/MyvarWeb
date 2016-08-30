@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyvarWeb.Headers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -17,6 +18,16 @@ namespace MyvarWeb.Net
         public HttpRequest(TcpClient tcp)
         {
             _tcp = tcp;
+        }
+
+        public string GetHost()
+        {
+            return (Header.Fields.Where((x) => { return x is HostHeader; }).First() as HostHeader).Host;
+        }
+
+        public string GetPath()
+        {
+            return (Header.Fields.Where((x) => { return x is MethodHeader; }).First() as MethodHeader).Path;
         }
 
         public void Parse()

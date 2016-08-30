@@ -79,8 +79,15 @@ namespace MyvarWeb.Net
                 {
                     var req = new HttpRequest(s);
                     req.Parse();
-                    var resp = VhostEngine.GenerateResponce(req);
-                    resp.Write(s.GetStream());
+                    try
+                    {
+                        var resp = VhostEngine.GenerateResponce(req);
+                        resp.Write(s.GetStream());
+                    }
+                    catch
+                    {
+                        
+                    }
                     s.Close();
                     
                 }

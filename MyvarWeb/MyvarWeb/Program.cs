@@ -10,6 +10,8 @@ namespace MyvarWeb
 {
     class Program
     {
+        public static Config Cfg { get; set; } = new Config();
+
         static void Main(string[] args)
         {
             HttpServer s = new HttpServer(8080);
