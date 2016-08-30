@@ -1,8 +1,9 @@
-﻿using MW.Core;
+﻿using MyvarWeb.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace MyvarWeb
@@ -11,8 +12,13 @@ namespace MyvarWeb
     {
         static void Main(string[] args)
         {
-            var en = new Engine();
-            en.Start();
+            HttpServer s = new HttpServer(8080);
+            s.Start();
+
+            while(true)
+            {
+                Thread.Sleep(25);
+            }
         }
     }
 }
