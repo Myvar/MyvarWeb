@@ -10,6 +10,8 @@ namespace WebSharp
     {
         private Action<string> Write { get; set; }
 
+       
+
         public Core(StringBuilder sb)
         {
             Write = (x) => { sb.Append(x); };

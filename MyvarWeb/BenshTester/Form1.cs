@@ -41,9 +41,27 @@ namespace BenshTester
             s.Start();
            var ss = new WebClient().DownloadString("http://localhost:8080/");
             s.Stop();
-            richTextBox1.Text += "resp: " + ss + " - time(mm:ss:ms): " + s.Elapsed.Minutes + ":" + s.Elapsed.Seconds + ":" + s.Elapsed.Milliseconds + Environment.NewLine;
+            richTextBox1.Text += "time(mm:ss:ms): " + s.Elapsed.Minutes + ":" + s.Elapsed.Seconds + ":" + s.Elapsed.Milliseconds + Environment.NewLine;
 
            
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            {
+                var s = new Stopwatch();
+                s.Start();
+                var ss = new WebClient().DownloadString("http://localhost:8080/");
+                s.Stop();
+                richTextBox1.Text += "WebSharp time(mm:ss:ms): " + s.Elapsed.Minutes + ":" + s.Elapsed.Seconds + ":" + s.Elapsed.Milliseconds + Environment.NewLine;
+            }
+            {
+                var s = new Stopwatch();
+                s.Start();
+                var ss = new WebClient().DownloadString("http://localhost/");
+                s.Stop();
+                richTextBox1.Text += "Php time(mm:ss:ms): " + s.Elapsed.Minutes + ":" + s.Elapsed.Seconds + ":" + s.Elapsed.Milliseconds + Environment.NewLine;
+            }
         }
     }
 }
