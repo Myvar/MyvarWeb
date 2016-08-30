@@ -26,6 +26,7 @@ namespace MyvarWeb.Net
 
         public HttpServer(int port)
         {
+            
             Port = port;
 
             NetworkT = new Thread(new ThreadStart(NetworkThread));
@@ -84,9 +85,9 @@ namespace MyvarWeb.Net
                         var resp = VhostEngine.GenerateResponce(req);
                         resp.Write(s.GetStream());
                     }
-                    catch
+                    catch(Exception e)
                     {
-                        
+                        Console.WriteLine(e.ToString());
                     }
                     s.Close();
                     
