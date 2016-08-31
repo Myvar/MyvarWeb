@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,7 +45,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core.cs" />
+    <Compile Include="Header.cs" />
+    <Compile Include="Headers\AcceptEncodingHeader.cs" />
+    <Compile Include="Headers\AcceptHeader.cs" />
+    <Compile Include="Headers\AcceptLanguageHeader.cs" />
+    <Compile Include="Headers\CacheControlHeader.cs" />
+    <Compile Include="Headers\ConnectionHeader.cs" />
+    <Compile Include="Headers\CookieHeader.cs" />
+    <Compile Include="Headers\DateHeader.cs" />
+    <Compile Include="Headers\GenericHeader.cs" />
+    <Compile Include="Headers\HostHeader.cs" />
+    <Compile Include="Headers\HttpFieldHeader.cs" />
+    <Compile Include="Headers\MethodHeader.cs" />
+    <Compile Include="Headers\ServerHeader.cs" />
+    <Compile Include="Headers\UserAgentHeader.cs" />
+    <Compile Include="HttpField.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Session.cs" />
+    <Compile Include="Utils.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

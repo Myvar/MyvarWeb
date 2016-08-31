@@ -12,7 +12,7 @@ namespace MyvarWeb
 {
     class Program
     {
-        public static Config Cfg { get; set; } = new Config();
+        public static Config Cfg { get; set; }
 
         static void Main(string[] args)
         {
@@ -22,6 +22,7 @@ namespace MyvarWeb
             }
             else
             {
+                Cfg =  new Config();
                 File.WriteAllText("config.json", JsonConvert.SerializeObject(Cfg, Formatting.Indented));
             }
 

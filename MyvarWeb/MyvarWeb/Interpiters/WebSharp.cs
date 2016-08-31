@@ -22,9 +22,12 @@ namespace MyvarWeb.Interpiters
 
         public WebSharpInterpiter(string src, HttpHeader h, HttpRequest rh)
         {
+            Headers.Fields.Clear();
             Raw = src;
             ReqHeaders = rh;
-            WriteHeader = (s) => { rh.Header.Fields.Add(new GenericHeader() { Raw = s }); };
+            WriteHeader = (s) => {
+                Headers.Fields.Add(new GenericHeader() { Raw = s });
+            };
         }
 
         public List<Token> Parse(string raw)
@@ -75,9 +78,11 @@ namespace MyvarWeb.Interpiters
                 {
 
                     var script = CSharpScript.Create(i.Raw, globalsType: typeof(Core));
+                    script.Options.AddReferences(typeof(WebSharp.Headers.CookieHeader).Assembly);
                     script.Options.AddImports("WebSharp");
+
                     script.Options.AddImports("System");
-                    //script.Options.AddReferences(typeof(System.DateTime).Assembly);
+                    
                     script.Compile();
                     var x = script.RunAsync(globals: new Core(_ret, WriteHeader, ReqHeaders.Header.ToString(), ReqHeaders.Body)).Result;
                     
@@ -88,7 +93,14 @@ namespace MyvarWeb.Interpiters
         public string Gencontent()
         {
             var ts = Parse(Raw);
-            Interpite(ts);
+            try
+            {
+                Interpite(ts);
+            }
+            catch(Exception e)
+            {
+                return e.ToString();
+            }
 
             return _ret.ToString();
         }

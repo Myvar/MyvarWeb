@@ -26,18 +26,28 @@ namespace MyvarWeb.Responce
         {
             var s = File.ReadAllText(Content);
             var ws = new WebSharpInterpiter(s, Headers, req );
+            var cont = ws.Gencontent();
+            
             {
-                var buf = Encoding.ASCII.GetBytes(Headers.ToString() + Environment.NewLine);
-                ns.Write(buf, 0, buf.Length);
+                var hds = Headers.ToString();
+                if (hds != "")
+                {
+                    var buf = Encoding.ASCII.GetBytes(hds + Environment.NewLine);
+                    ns.Write(buf, 0, buf.Length);
+                }
             }
             {
-                var buf = Encoding.ASCII.GetBytes(ws.Headers.ToString() + Environment.NewLine + Environment.NewLine);
-                ns.Write(buf, 0, buf.Length);
+                var hds = ws.Headers.ToString();
+                if (hds != "")
+                {
+                    var buf = Encoding.ASCII.GetBytes(hds + Environment.NewLine + Environment.NewLine);
+                    ns.Write(buf, 0, buf.Length);
+                }
             }
             {
                 
                 
-                var buf = Encoding.ASCII.GetBytes(ws.Gencontent());
+                var buf = Encoding.ASCII.GetBytes(cont);
                 ns.Write(buf, 0, buf.Length);
             }
         }

@@ -13,6 +13,8 @@ namespace WebSharp
         private string _Headers { get; set; }
         private string _Body { get; set; }
 
+        public Header Header { get; set; }
+        public Session Session { get; set; }
 
         public Core(StringBuilder sb, Action<string> writeHeader, string headers, string body)
         {
@@ -20,6 +22,9 @@ namespace WebSharp
             _Write = (x) => { sb.Append(x); };
             _Headers = headers;
             _Body = body;
+
+            Header = new Header(_Headers, _WriteHeader);
+            Session = new Session(Header, _WriteHeader);
         }
 
         public void echo(string s)
