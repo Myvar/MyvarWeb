@@ -12,5 +12,15 @@ namespace MyvarWeb
         {
             {"localhost:8080", "./www"}
         };
+
+        public List<int> PortIndex { get; set; } = new List<int>()
+        {
+            8080
+        };
+
+        public List<string> DisabledPaths { get; set; } = new List<string>()
+        {
+            ""
+        };
     }
 }

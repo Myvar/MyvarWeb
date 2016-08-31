@@ -1,4 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
+using MyvarWeb.Headers;
+using MyvarWeb.Net;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +15,16 @@ namespace MyvarWeb.Interpiters
         public string Raw { get; set; }
 
         private StringBuilder _ret { get; set; } = new StringBuilder();
+        public HttpHeader Headers { get; set; } = new HttpHeader();
+        public HttpRequest ReqHeaders { get; set; } 
 
-        public WebSharpInterpiter(string src)
+        private Action<string> WriteHeader { get; set; }
+
+        public WebSharpInterpiter(string src, HttpHeader h, HttpRequest rh)
         {
             Raw = src;
+            ReqHeaders = rh;
+            WriteHeader = (s) => { rh.Header.Fields.Add(new GenericHeader() { Raw = s }); };
         }
 
         public List<Token> Parse(string raw)
@@ -71,7 +79,7 @@ namespace MyvarWeb.Interpiters
                     script.Options.AddImports("System");
                     //script.Options.AddReferences(typeof(System.DateTime).Assembly);
                     script.Compile();
-                    var x = script.RunAsync(globals: new Core(_ret)).Result;
+                    var x = script.RunAsync(globals: new Core(_ret, WriteHeader, ReqHeaders.Header.ToString(), ReqHeaders.Body)).Result;
                     
                 }
             }

@@ -14,6 +14,12 @@ namespace MyvarWeb
         public static HttpResponce GenerateResponce(HttpRequest req)
         {
             var path = req.GetPath().Split('?')[0];
+
+            if(Program.Cfg.DisabledPaths.Contains(path))
+            {
+                return new StringResponce("Forbiden");
+            }
+
             var root = "";
 
             var hst = req.GetHost();
@@ -53,7 +59,7 @@ namespace MyvarWeb
                 {
                     if(file.EndsWith(".cs"))
                     {
-                        return new WebSharpResponce(file);
+                        return new WebSharpResponce(file, req);
                     }
                     else
                     {
